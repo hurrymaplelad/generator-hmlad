@@ -1,0 +1,29 @@
+{
+  "name": "{{ pkgname }}",
+  "version": "0.0.0",
+  "description": "{{ description }}",
+  "author": "Adam Hull <adam@hmlad.com>",
+  {{~#if contributors}}
+  "contributors": [
+    {{#each contributors~}}
+    "{{{this}}}"{{#if @index}},{{/if}}
+    {{~/each}}
+  ],
+  {{/if~}}
+  "main": "{{underscored pkgname}}",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/hurrymaplelad/{{ reposlug }}.git"
+  },
+  "homepage": "https://github.com/hurrymaplelad/{{ reposlug }}",
+  "bugs": "https://github.com/hurrymaplelad/{{ reposlug }}/issues",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "coffee-script": ">=1.7.x",
+    "mocha": "~1.x.x"
+  },
+  "scripts": {
+    "test": "mocha"
+  }
+}
