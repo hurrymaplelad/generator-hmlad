@@ -2,17 +2,6 @@ path = require 'path'
 helpers = require('yeoman-generator').test
 assert = require('yeoman-generator').assert
 
-# TODO: Remove once https://github.com/yeoman/generator/pull/487
-#       is released
-mockPrompt = (generator, answers) ->
-  origPrompt = generator.prompt
-  generator.prompt = (prompts, done) ->
-    defaults = {}
-    for prompt in prompts
-      defaults[prompt.name] = prompt.default
-    done @_.assign defaults, answers
-  generator.origPrompt = origPrompt
-
 describe 'hmlad generator', ->
   reposlug = 'node-french-omelette' # prefix with node to test module name different from repo name
 
@@ -25,7 +14,7 @@ describe 'hmlad generator', ->
         @app = helpers.createGenerator('hmlad:app', ['../../app/index.js'])
         @app.options['skip-install'] = true
 
-        mockPrompt @app, responses
+        helpers.mockPrompt @app, responses
         @app.run {pkgname: 'foo'}, ->
           done()
 
