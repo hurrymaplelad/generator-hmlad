@@ -2,7 +2,8 @@ fs = require 'fs'
 path = require 'path'
 yeoman = require 'yeoman-generator'
 handlebarsEngine = require 'yeoman-handlebars-engine'
-{underscored, dasherize} = require 'underscore.string'
+require('../template_helpers').register()
+{underscored} = require 'underscore.string'
 childProcess = require 'child_process'
 
 contributor = (user) ->
@@ -59,6 +60,11 @@ module.exports = class HmladNpmGenerator extends yeoman.generators.Base
     gitConfig (err, config) =>
       @user = config?.user
       done()
+
+  author: ->
+    @author =
+      name: 'Adam Hull'
+      email: 'adam@hmlad.com'
 
   contributors: ->
     @contributors = [@user]
