@@ -39,6 +39,9 @@ describe 'hmlad generator', ->
       it 'includes author', ->
         assert.fileContent 'package.json', /"author": "Adam Hull <adam@hmlad.com>"/
 
+      it 'doesnt add contributors', ->
+        assert.noFileContent 'package.json', /"contributors":/
+
     describe 'README.md', ->
       it 'includes badges', ->
         assert.fileContent 'README.md', /// travis-ci ///

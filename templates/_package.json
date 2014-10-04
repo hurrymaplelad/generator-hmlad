@@ -3,13 +3,6 @@
   "version": "0.0.0",
   "description": "{{ description }}",
   "author": "{{{ user author }}}",
-  {{~#if contributors}}
-  "contributors": [
-    {{#each contributors~}}
-    "{{{this}}}"{{#if @index}},{{/if}}
-    {{~/each}}
-  ],
-  {{/if~}}
   "main": "{{underscored pkgname}}",
   "repository": {
     "type": "git",

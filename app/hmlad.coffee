@@ -6,11 +6,6 @@ require('../template_helpers').register()
 {underscored} = require 'underscore.string'
 childProcess = require 'child_process'
 
-contributor = (user) ->
-  if user.name and user.email
-  then "#{user.name} <#{user.email}>"
-  else user.name or user.email
-
 bundleExec = (args..., done) ->
   args.unshift 'exec'
   env = Object.create process.env
@@ -61,16 +56,13 @@ module.exports = class HmladNpmGenerator extends yeoman.generators.Base
       @user = config?.user
       done()
 
-  author: ->
-    @author =
+  defaultUser: ->
+    @user ?=
       name: 'Adam Hull'
       email: 'adam@hmlad.com'
 
-  contributors: ->
-    @contributors = [@user]
-      .filter(Boolean)
-      .map(contributor)
-      .filter(Boolean)
+  author: ->
+    @author = @user
 
   project: ->
     @copy '../.editorconfig', '.editorconfig'
