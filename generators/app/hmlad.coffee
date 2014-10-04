@@ -6,12 +6,14 @@ require('../template_helpers').register()
 {underscored} = require 'underscore.string'
 childProcess = require 'child_process'
 
+quiet = false
+
 bundleExec = (args..., done) ->
   args.unshift 'exec'
   env = Object.create process.env
-  env.BUNDLE_GEMFILE = path.join __dirname, '../Gemfile'
+  env.BUNDLE_GEMFILE = path.join __dirname, '../../Gemfile'
   child = childProcess.spawn 'bundle', args,
-    stdio: 'inherit'
+    stdio: quiet and 'ignore' or 'inherit'
     env: env
   child.on 'close', done
 
@@ -21,13 +23,14 @@ module.exports = class HmladNpmGenerator extends yeoman.generators.Base
   constructor: (args, options, config) ->
     options.engine = handlebarsEngine
     yeoman.generators.Base.apply this, arguments
+    quiet = options.quiet
     @on 'end', ->
       @installDependencies
         skipInstall: options['skip-install']
         bower: false
 
     @sourceRoot path.join __dirname, '../templates'
-    @pkg = require '../package.json'
+    @pkg = require '../../package.json'
 
     @reposlug = path.basename process.cwd()
 
@@ -44,9 +47,16 @@ module.exports = class HmladNpmGenerator extends yeoman.generators.Base
       name: 'description'
       message: 'Describe your package'
       default: ''
-
+    }, {
+      type: 'input'
+      name: 'keywords'
+      message: 'Keywords?'
+      filter: (input) -> input.split(',').map (term) -> term.trim()
+      default: []
     }]
-    @prompt prompts, ({@pkgname, @description}) =>
+    @prompt prompts, ({@pkgname, @description, @keywords}) =>
+      unless @keywords.length
+        delete @keywords
       cb()
 
   gitUser: ->
@@ -65,7 +75,8 @@ module.exports = class HmladNpmGenerator extends yeoman.generators.Base
     @author = @user
 
   project: ->
-    @copy '../.editorconfig', '.editorconfig'
+
+    @copy '../../.editorconfig', '.editorconfig'
     @copy 'gitignore', '.gitignore'
     @copy 'travis.yml', '.travis.yml'
     @template '_package.json', 'package.json'
@@ -73,7 +84,7 @@ module.exports = class HmladNpmGenerator extends yeoman.generators.Base
     @write "#{underscored @pkgname}.js", ''
 
   test: ->
-    @copy '../test/mocha.opts', 'test/mocha.opts'
+    @copy '../../test/mocha.opts', 'test/mocha.opts'
     @copy 'test.coffee', "test/#{underscored @pkgname}.test.coffee"
 
   git: ->

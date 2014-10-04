@@ -11,8 +11,10 @@ describe 'hmlad generator', ->
         if err
           return done(err)
 
-        @app = helpers.createGenerator('hmlad:app', ['../../../app/index.js'])
-        @app.options['skip-install'] = true
+        options = {}
+        options['skip-install'] = true
+        options['quiet'] = true
+        @app = helpers.createGenerator('hmlad:app', ['../../../generators/app/index.js'], [], options)
 
         helpers.mockPrompt @app, responses
         @app.run {pkgname: 'foo'}, ->
@@ -42,6 +44,9 @@ describe 'hmlad generator', ->
       it 'doesnt add contributors', ->
         assert.noFileContent 'package.json', /"contributors":/
 
+      it 'doesnt add keywords', ->
+        assert.noFileContent 'package.json', /"keywords":/
+
     describe 'README.md', ->
       it 'includes badges', ->
         assert.fileContent 'README.md', /// travis-ci ///
@@ -57,22 +62,20 @@ describe 'hmlad generator', ->
         mocha.addFile "test/node_french_omelette.test.coffee"
         mocha.run()
 
-  describe 'when user supplies a package name and description', ->
+  describe 'when user supplies keywords', ->
+    keywords = ['sesquipedalian', 'prolix']
+
+    before (done) ->
+      @runGenerator {keywords}, done
+
+    describe 'package.json', ->
+      it 'includes keywords', ->
+        assert.fileContent 'package.json', /// "keywords":\s\["sesquipedalian",\s"prolix"\] ///
+
+  describe 'when user supplies tags', ->
+    tags =
     pkgname = 'french-omelette'
     description = "Dish made from beaten eggs quickly cooked with butter or oil in a frying pan"
 
     before (done) ->
       @runGenerator {pkgname, description}, done
-
-    describe 'package.json', ->
-      it 'includes supplied package name and description', ->
-        assert.fileContent 'package.json', /// "name":\s"#{pkgname}" ///
-        assert.fileContent 'package.json', /// "description":\s"#{description}" ///
-
-      it 'does not use parent directory name', ->
-        assert.noFileContent 'package.json', /// "name":\s"#{reposlug}" ///
-
-    describe 'README.md', ->
-      it 'includes package name and description', ->
-        assert.fileContent 'README.md', /// #{pkgname} ///
-        assert.fileContent 'README.md', /// #{description} ///

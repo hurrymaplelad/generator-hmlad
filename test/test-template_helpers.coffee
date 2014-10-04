@@ -1,5 +1,5 @@
 assert = require 'assert'
-helpers = require '../template_helpers'
+helpers = require '../generators/template_helpers'
 
 describe 'template helpers', ->
   describe '::user', ->
