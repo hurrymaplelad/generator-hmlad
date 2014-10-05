@@ -1,26 +1,7 @@
-path = require 'path'
-helpers = require('yeoman-generator').test
+require './spec_helper'
 assert = require('yeoman-generator').assert
 
-describe 'hmlad generator', ->
-  reposlug = 'node-french-omelette' # prefix with node to test module name different from repo name
-
-  before ->
-    @runGenerator = (responses, done) ->
-      helpers.testDirectory path.join(__dirname, 'generated', reposlug), (err) =>
-        if err
-          return done(err)
-
-        options = {}
-        options['skip-install'] = true
-        options['quiet'] = true
-        @app = helpers.createGenerator('hmlad:app', ['../../../generators/app/index.js'], [], options)
-
-        helpers.mockPrompt @app, responses
-        @app.run {pkgname: 'foo'}, ->
-          done()
-
-
+describe '[files]', ->
   describe 'with default prompt values', ->
     before (done) ->
       @runGenerator {}, done
@@ -36,7 +17,7 @@ describe 'hmlad generator', ->
 
     describe 'package.json', ->
       it 'includes package name matching parent directory', ->
-        assert.fileContent 'package.json', /// "name":\s"#{reposlug}" ///
+        assert.fileContent 'package.json', /// "name":\s"#{@reposlug}" ///
 
       it 'includes author', ->
         assert.fileContent 'package.json', /"author": "Adam Hull <adam@hmlad.com>"/
@@ -51,16 +32,6 @@ describe 'hmlad generator', ->
       it 'includes badges', ->
         assert.fileContent 'README.md', /// travis-ci ///
         assert.fileContent 'README.md', /// badge.fury.io/js ///
-
-    describe 'test', ->
-      it 'fails', (done) ->
-        Mocha = require 'mocha'
-        mocha = new Mocha reporter: (runner) ->
-          runner.on 'fail', (test, err) ->
-            assert /busted/.test err
-            done()
-        mocha.addFile "test/node_french_omelette.test.coffee"
-        mocha.run()
 
   describe 'when user supplies keywords', ->
     keywords = ['sesquipedalian', 'prolix']
@@ -85,6 +56,12 @@ describe 'hmlad generator', ->
       it 'main links to source file', ->
         assert.fileContent 'package.json', /// "main":\s"node_french_omelette" ///
 
+      it 'depends on jshint at development time', ->
+        assert.fileContent 'package.json', /// "jshint": ///
+
+      it 'runs jshint with tests', ->
+        assert.fileContent 'package.json', /// "test":.*jshint ///
+
   describe 'using coffeescript', ->
     before (done) ->
       @runGenerator {coffee: true}, done
@@ -101,5 +78,4 @@ describe 'hmlad generator', ->
 
       it 'includes compilation scripts', ->
         assert.fileContent 'package.json', /"prepublish": "npm run compile"/
-
 

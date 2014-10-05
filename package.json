@@ -27,7 +27,8 @@
   },
   "devDependencies": {
     "mocha": "~1.17.1",
-    "yo": ">=1.0.0-rc.1"
+    "yo": ">=1.0.0-rc.1",
+    "event-stream": "~3.1.7"
   },
   "peerDependencies": {
     "yo": ">=1.0.0-rc.1"

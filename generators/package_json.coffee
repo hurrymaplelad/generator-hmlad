@@ -4,8 +4,7 @@ helpers = require './template_helpers'
 
 module.exports = (data, overrides={}) ->
   json = base.apply(data)
-  if data.coffee
-    json = merge json, coffee.apply(data)
+  json = merge json, (data.coffee and coffee or js).apply(data)
   json = merge json, overrides
   JSON.stringify json, null, 2
 
@@ -31,6 +30,12 @@ base = ->
 coffee = ->
   main: "lib/#{underscored @pkgname}"
   scripts:
-    "prepublish": "npm run compile"
-    "pretest": "npm run compile"
-    "compile": "coffee --compile --output lib/ src/"
+    prepublish: "npm run compile"
+    pretest: "npm run compile"
+    compile: "coffee --compile --output lib/ src/"
+
+js = ->
+  devDependencies:
+    jshint: '*'
+  scripts:
+    test: "jshint *.js && mocha"
