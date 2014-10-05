@@ -90,8 +90,13 @@ module.exports = class HmladNpmGenerator extends yeoman.generators.Base
     @copy '../../.editorconfig', '.editorconfig'
     @copy 'gitignore', '.gitignore'
     @copy 'travis.yml', '.travis.yml'
-    @template '_package.json', 'package.json'
     @template '_README.md', 'README.md'
+
+  packageJson: ->
+    packageJson = require '../package_json'
+    @write 'package.json', packageJson(@)
+
+  sourceFile: ->
     filename = underscored @pkgname
     if @coffee
       @write "src/#{filename}.coffee", ''

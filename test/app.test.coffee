@@ -70,7 +70,9 @@ describe 'hmlad generator', ->
 
     describe 'package.json', ->
       it 'includes keywords', ->
-        assert.fileContent 'package.json', /// "keywords":\s\["sesquipedalian",\s"prolix"\] ///
+        assert.fileContent 'package.json', /"keywords": \[/
+        for keyword in keywords
+          assert.fileContent 'package.json', /// "#{keyword} ///
 
   describe 'using javascript', ->
     before (done) ->
