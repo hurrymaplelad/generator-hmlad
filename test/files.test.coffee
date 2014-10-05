@@ -33,6 +33,10 @@ describe '[files]', ->
         assert.fileContent 'README.md', /// travis-ci ///
         assert.fileContent 'README.md', /// badge.fury.io/js ///
 
+    describe 'mocha.opts', ->
+      it 'bails on first failure', ->
+        assert.fileContent 'test/mocha.opts', /// --bail ///
+
   describe 'when user supplies keywords', ->
     keywords = ['sesquipedalian', 'prolix']
 
