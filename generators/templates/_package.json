@@ -8,7 +8,7 @@
     "{{{this}}}"{{#unless @last}}, {{/unless}}
   {{~/each}}],
   {{/if~}}
-  "main": "{{underscored pkgname}}",
+  "main": "{{#if coffee}}lib/{{/if}}{{underscored pkgname}}",
   "repository": {
     "type": "git",
     "url": "git://github.com/hurrymaplelad/{{ reposlug }}.git"
@@ -22,6 +22,11 @@
     "mocha": "~1.x.x"
   },
   "scripts": {
+    {{~#if coffee}}
+    "prepublish": "npm run compile",
+    "pretest": "npm run compile",
+    "compile": "coffee --compile --output lib/ src/",
+    {{/if~}}
     "test": "mocha"
   }
 }

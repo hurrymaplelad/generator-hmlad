@@ -72,10 +72,32 @@ describe 'hmlad generator', ->
       it 'includes keywords', ->
         assert.fileContent 'package.json', /// "keywords":\s\["sesquipedalian",\s"prolix"\] ///
 
-  describe 'when user supplies tags', ->
-    tags =
-    pkgname = 'french-omelette'
-    description = "Dish made from beaten eggs quickly cooked with butter or oil in a frying pan"
-
+  describe 'using javascript', ->
     before (done) ->
-      @runGenerator {pkgname, description}, done
+      @runGenerator {coffee: false}, done
+
+    it 'creates a file for the module in the package root', ->
+      assert.file 'node_french_omelette.js'
+
+    describe 'package.json', ->
+      it 'main links to source file', ->
+        assert.fileContent 'package.json', /// "main":\s"node_french_omelette" ///
+
+  describe 'using coffeescript', ->
+    before (done) ->
+      @runGenerator {coffee: true}, done
+
+    it 'doesnt create source files in the pacakge root', ->
+      assert.noFile 'node_french_omelette.js'
+
+    it 'creates a file for the module in src directory', ->
+      assert.file 'src/node_french_omelette.coffee'
+
+    describe 'package.json', ->
+      it 'main links to the compiled file', ->
+        assert.fileContent 'package.json', /// "main":\s"lib/node_french_omelette" ///
+
+      it 'includes compilation scripts', ->
+        assert.fileContent 'package.json', /"prepublish": "npm run compile"/
+
+

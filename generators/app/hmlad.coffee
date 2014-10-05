@@ -51,10 +51,22 @@ module.exports = class HmladNpmGenerator extends yeoman.generators.Base
       type: 'input'
       name: 'keywords'
       message: 'Keywords?'
-      filter: (input) -> input.split(',').map (term) -> term.trim()
-      default: []
+      default: ''
+      filter: (input) ->
+        input.split(',')
+        .map((term) -> term.trim())
+        .filter(Boolean)
+    }, {
+      type: 'list'
+      name: 'coffee'
+      message: 'Using coffeescript for this one?'
+      default: false
+      choices: [
+        {name: 'js', value: false}
+        {name: 'coffee', value: true}
+      ]
     }]
-    @prompt prompts, ({@pkgname, @description, @keywords}) =>
+    @prompt prompts, ({@pkgname, @description, @keywords, @coffee}) =>
       unless @keywords.length
         delete @keywords
       cb()
@@ -75,13 +87,16 @@ module.exports = class HmladNpmGenerator extends yeoman.generators.Base
     @author = @user
 
   project: ->
-
     @copy '../../.editorconfig', '.editorconfig'
     @copy 'gitignore', '.gitignore'
     @copy 'travis.yml', '.travis.yml'
     @template '_package.json', 'package.json'
     @template '_README.md', 'README.md'
-    @write "#{underscored @pkgname}.js", ''
+    filename = underscored @pkgname
+    if @coffee
+      @write "src/#{filename}.coffee", ''
+    else
+      @write "#{filename}.js", ''
 
   test: ->
     @copy '../../test/mocha.opts', 'test/mocha.opts'
