@@ -1,7 +1,8 @@
-# generator-hmlad [![Build Status](https://secure.travis-ci.org/hurrymaplelad/generator-hmlad.png?branch=master)](https://travis-ci.org/hurrymaplelad/generator-hmlad)
+# generator-hmlad
 
 [Yeoman](http://yeoman.io) generator for NPM packages following my personal conventions
 
+[![Build Status](http://img.shields.io/travis/hurrymaplelad/generator-hmlad/master.svg?style=flat-square)](https://travis-ci.org/hurrymaplelad/generator-hmlad)
 
 ## Getting Started
 

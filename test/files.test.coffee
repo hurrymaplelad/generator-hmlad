@@ -30,8 +30,8 @@ describe '[files]', ->
 
     describe 'README.md', ->
       it 'includes badges', ->
-        assert.fileContent 'README.md', /// travis-ci ///
-        assert.fileContent 'README.md', /// badge.fury.io/js ///
+        assert.fileContent 'README.md', /// shields.io/travis ///
+        assert.fileContent 'README.md', /// shields.io/npm ///
 
     describe 'mocha.opts', ->
       it 'bails on first failure', ->
