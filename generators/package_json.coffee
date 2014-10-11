@@ -20,6 +20,7 @@ base = ->
     url: "git://github.com/hurrymaplelad/#{@reposlug}.git"
   homepage: "https://github.com/hurrymaplelad/#{@reposlug}"
   bugs: "https://github.com/hurrymaplelad/#{@reposlug}/issues"
+  license: 'MIT'
   dependencies: {}
   devDependencies:
     "coffee-script": ">=1.7.x"

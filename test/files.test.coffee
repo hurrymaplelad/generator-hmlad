@@ -28,6 +28,9 @@ describe '[files]', ->
       it 'doesnt add keywords', ->
         assert.noFileContent 'package.json', /"keywords":/
 
+      it 'adds an open source license', ->
+        assert.fileContent 'package.json', /// "license":\s"MIT" ///
+
     describe 'README.md', ->
       it 'includes badges', ->
         assert.fileContent 'README.md', /// shields.io/travis ///

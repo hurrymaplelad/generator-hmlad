@@ -14,7 +14,7 @@ describe '[scripts]', ->
     child
 
   install = (done) ->
-    @timeout 10000
+    @timeout 55000
     npm 'install', (code) ->
       assert.equal code, 0, 'should not error'
       done()

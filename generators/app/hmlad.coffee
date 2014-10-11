@@ -2,7 +2,6 @@ fs = require 'fs'
 path = require 'path'
 yeoman = require 'yeoman-generator'
 handlebarsEngine = require 'yeoman-handlebars-engine'
-require('../template_helpers').register()
 {underscored} = require 'underscore.string'
 childProcess = require 'child_process'
 
