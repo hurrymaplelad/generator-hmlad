@@ -1,21 +1,15 @@
 require './spec_helper'
 {spawn} = require 'child_process'
-{split} = require 'event-stream'
+split = require 'split'
 assert = require 'assert'
+logProcess = require 'process-logger'
 
 describe '[scripts]', ->
-  log = (message) ->
-    console.log '[generated]', message.toString()
-
   npm = (cmd, options, done) ->
     if not done
       done = options; options = {}
-
     child = spawn 'npm', [cmd]
-    child.stdout.pipe(split()).on 'data', log
-    child.stderr.pipe(split()).on 'data', (data) ->
-      log data
-      options.err? data
+    logProcess child, prefix: '[generated]'
     child.on 'close', done
     child
 
@@ -27,13 +21,12 @@ describe '[scripts]', ->
 
   test = (done) ->
     loggedBused = false
-    npm 'test',
-      err: (data) ->
-        if /\bbusted\b/.test data
-          loggedBused = true
-      (code) ->
-        assert loggedBused, 'should show the mocha test failure'
-        done()
+    npm 'test', (code) ->
+      assert loggedBused, 'should show the mocha test failure'
+      done()
+    .stderr.pipe(split()).on 'data', (data) ->
+      if /\bbusted\b/.test data
+        loggedBused = true
 
   describe 'using javascript', ->
     before (done) ->
