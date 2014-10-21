@@ -10,6 +10,7 @@ describe '[files]', ->
       assert.file [
         '.editorconfig'
         '.gitignore'
+        '.npmignore'
         '.travis.yml'
         'test/mocha.opts'
       ]

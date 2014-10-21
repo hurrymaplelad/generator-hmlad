@@ -88,6 +88,7 @@ module.exports = class HmladNpmGenerator extends yeoman.generators.Base
   project: ->
     @copy '../../.editorconfig', '.editorconfig'
     @copy 'gitignore', '.gitignore'
+    @copy 'npmignore', '.npmignore'
     @copy 'travis.yml', '.travis.yml'
     @template '_README.md', 'README.md'
 
