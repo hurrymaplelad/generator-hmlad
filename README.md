@@ -2,6 +2,8 @@
 
 [Yeoman](http://yeoman.io) generator for NPM packages following my personal conventions
 
+**Deprecated** – see [gen-npm](https://github.com/hurrymaplelad/gen-npm)
+
 [![Build Status](http://img.shields.io/travis/hurrymaplelad/generator-hmlad/master.svg?style=flat-square)](https://travis-ci.org/hurrymaplelad/generator-hmlad)
 
 ## Getting Started
